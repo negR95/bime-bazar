@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import local from "next/font/local";
 import { twMerge } from "tailwind-merge";
+import "./globals.css";
+import { GlobalContext } from "#/components/GlobalContext";
 
 export const metadata = {
   title: "بیمه بازار | Bimeh Bazar",
@@ -21,7 +22,7 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
           vazirmatn.className,
         )}
       >
-        {children}
+        <GlobalContext>{children}</GlobalContext>
       </body>
     </html>
   );

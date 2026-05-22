@@ -1,1 +1,2 @@
-export { OrderSuccessPage as default } from "#/pages/OrderSuccessPage";
+import OrderSuccessPage from "#/_pages/OrderSuccessPage";
+export default OrderSuccessPage;

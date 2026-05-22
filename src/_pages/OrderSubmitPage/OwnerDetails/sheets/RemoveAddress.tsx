@@ -1,15 +1,16 @@
-import { Button } from "#/components/Button";
-import { CloseIcon } from "#/components/CloseIcon";
+import Button from "#/components/Button";
+import CloseIcon from "#/components/CloseIcon";
 import type { Address } from "#/services/api";
+import { removedAdressesIds, useSheet } from "../utils";
 
 type Props = {
   $onClose: () => void;
-  setSheet: React.Dispatch<React.SetStateAction<SheetContent>>;
   address?: Address;
 };
 
-export const RemoveAddress = (props: Props) => {
-  const { $onClose, setSheet, address } = props;
+const RemoveAddress = (props: Props) => {
+  const { $onClose, address } = props;
+  const [, setSheet] = useSheet();
 
   return (
     <section>
@@ -35,7 +36,15 @@ export const RemoveAddress = (props: Props) => {
       </div>
 
       <div className="flex gap-2.5 p-2.5 shadow">
-        <Button $full onClick={$onClose} $color="secondary">
+        <Button
+          $full
+          onClick={() => {
+            if (!address) return $onClose();
+            removedAdressesIds.add(address.id);
+            setSheet("select-address");
+          }}
+          $color="secondary"
+        >
           تایید
         </Button>
 
@@ -51,3 +60,5 @@ export const RemoveAddress = (props: Props) => {
     </section>
   );
 };
+
+export default RemoveAddress;

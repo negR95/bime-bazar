@@ -1,30 +1,41 @@
 "use client";
 
 import { Formik } from "formik";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { twMerge } from "tailwind-merge";
-import { BottomSheet } from "#/components/BottomSheet";
-import { Button } from "#/components/Button";
-import { Section } from "#/components/Section";
-import { TextInput } from "#/components/TextInput";
-import type { Address } from "#/services/api";
-import { RemoveAddress } from "./RemoveAddress";
-import { SelectAddress } from "./SelectAddress";
-import { SubmitButton } from "./SubmitButton";
-import { SubmitError } from "./SubmitError";
-import { initialValues, validationSchema } from "./utils";
+import Button from "#/components/Button";
+import { useGlobalContext } from "#/components/GlobalContext";
+import Section from "#/components/Section";
+import TextInput from "#/components/TextInput";
+import { api } from "#/services/api";
+import { useMutation } from "#/services/hooks";
+import Sheets from "./sheets/Sheets";
+import { initialValues, useSheet, validationSchema } from "./utils";
 
 const NOT_DIGIT_REGEX = /\D/g;
 
-export const OwnerDetails = () => {
-  const [open, setOpen] = React.useState(false);
-  const [sheet, setSheet] = React.useState<SheetContent>("unset");
-  const [addressToRemove, setAddressToRemove] = React.useState<Address>();
+const OwnerDetails = () => {
+  const router = useRouter();
+  const [, setSheet] = useSheet();
+  const [initValues, setInitValues] = React.useState(initialValues);
+  const [gCtx, setGCtx] = useGlobalContext();
 
-  const onClose = () => {
-    setOpen(false);
-    setSheet("unset");
-  };
+  const {
+    mutate: submitOrder,
+    loading: isSubmitting,
+    error,
+  } = useMutation(api.saveOrder);
+
+  React.useEffect(() => {
+    if (!gCtx) return;
+    setInitValues(gCtx);
+  }, [gCtx]);
+
+  React.useEffect(() => {
+    if (error == null) return;
+    setSheet("submit-error");
+  }, [error, setSheet]);
 
   return (
     <Section $title="مشخصات مالک خودرو">
@@ -33,37 +44,32 @@ export const OwnerDetails = () => {
       </h4>
 
       <Formik
-        onSubmit={() => {}}
-        initialValues={initialValues}
+        onSubmit={async (values) => {
+          if (!values.selectedAddress?.id) return;
+
+          await submitOrder({
+            addressId: values.selectedAddress.id,
+            nationalId: values.nationalId,
+            phoneNumber: values.phoneNumber,
+          });
+
+          setGCtx(values);
+          router.push("/order/success");
+        }}
+        initialValues={initValues}
         validationSchema={validationSchema}
+        enableReinitialize
+        validateOnMount
       >
         {({
           values,
+          isValid,
           errors,
           touched,
           handleSubmit,
           handleBlur,
           setFieldValue,
         }) => {
-          const BOTTOM_SHEETS = {
-            unset: null,
-            "select-address": (
-              <SelectAddress
-                $onClose={onClose}
-                setSheet={setSheet}
-                setAddressToRemove={setAddressToRemove}
-              />
-            ),
-            "remove-address": (
-              <RemoveAddress
-                $onClose={onClose}
-                address={addressToRemove}
-                setSheet={setSheet}
-              />
-            ),
-            "submit-error": <SubmitError $onClose={onClose} />,
-          };
-
           const handleNumericChange = (
             event: React.ChangeEvent<HTMLInputElement>,
           ) => {
@@ -103,8 +109,8 @@ export const OwnerDetails = () => {
 
               <p
                 className={twMerge(
+                  "text-sm mb-3",
                   values.selectedAddress && "text-[#757575]",
-                  "text-sm mb-3 ",
                   touched.selectedAddress
                     ? errors.selectedAddress && "text-red-500"
                     : false,
@@ -117,10 +123,8 @@ export const OwnerDetails = () => {
                     "لطفا آدرسی را که می‌‌خواهید روی بیمه‌نامه درج شود، وارد کنید."}
               </p>
 
-              <div className="flex flex-col gap-6 items-end">
-                <BottomSheet $open={open} $onClose={onClose}>
-                  {BOTTOM_SHEETS[sheet]}
-                </BottomSheet>
+              <div className="flex flex-col gap-6 items-end mt-auto">
+                <Sheets />
 
                 <Button
                   type="button"
@@ -128,14 +132,21 @@ export const OwnerDetails = () => {
                   $full
                   onClick={(event) => {
                     event.stopPropagation();
-                    setOpen(true);
+
                     setSheet("select-address");
                   }}
                 >
                   انتخاب از آدرس‌های من
                 </Button>
 
-                <SubmitButton setSheet={setSheet} />
+                <Button
+                  type="submit"
+                  $color="secondary"
+                  disabled={!isValid || isSubmitting}
+                  $loading={isSubmitting}
+                >
+                  تایید و ادامه
+                </Button>
               </div>
             </form>
           );
@@ -144,3 +155,5 @@ export const OwnerDetails = () => {
     </Section>
   );
 };
+
+export default OwnerDetails;

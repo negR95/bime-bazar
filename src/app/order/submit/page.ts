@@ -1,1 +1,2 @@
-export { OrderSubmitPage as default } from "#/pages/OrderSubmitPage";
+import OrderSubmitPage from "#/_pages/OrderSubmitPage";
+export default OrderSubmitPage;

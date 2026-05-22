@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Section } from "#/components/Section";
+import Section from "#/components/Section";
 
 const Details = (props: { rightText: string; leftText: string }) => {
   return (
@@ -11,7 +11,7 @@ const Details = (props: { rightText: string; leftText: string }) => {
   );
 };
 
-export const CarDetails = (props: { isSuccessPage?: boolean }) => {
+const CarDetails = (props: { isSuccessPage?: boolean }) => {
   const { isSuccessPage = false } = props;
 
   return (
@@ -49,3 +49,5 @@ export const CarDetails = (props: { isSuccessPage?: boolean }) => {
     </Section>
   );
 };
+
+export default CarDetails;

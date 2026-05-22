@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Button } from "#/components/Button";
-import { CarDetails } from "#/pages/OrderSubmitPage/CarDetails";
+import Button from "#/components/Button";
+import CarDetails from "#/_pages/OrderSubmitPage/CarDetails";
 
-export const OrderSuccessPage = () => {
+const OrderSuccessPage = () => {
   return (
     <div className="flex flex-col h-dvh justify-between">
       <CarDetails isSuccessPage />
@@ -15,3 +15,5 @@ export const OrderSuccessPage = () => {
     </div>
   );
 };
+
+export default OrderSuccessPage;

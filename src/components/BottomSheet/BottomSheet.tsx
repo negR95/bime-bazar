@@ -3,7 +3,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { twMerge } from "tailwind-merge";
-import { useOutsideClick } from "#/utils";
+import useIsClient from "#/hooks/useIsClient";
+import useOutsideClick from "#/hooks/useOutsideClick";
 import { Overlay } from "./Overlay";
 
 type Props = React.PropsWithChildren<{
@@ -13,23 +14,10 @@ type Props = React.PropsWithChildren<{
 
 export const BottomSheet = (props: Props) => {
   const { children, $open, $onClose } = props;
-  const [mounted, setMounted] = React.useState(false);
+  const isClient = useIsClient();
   const ref = useOutsideClick($onClose);
 
-  React.useEffect(() => {
-    if ($open) {
-      window.history.pushState({ bottomSheetOpen: true }, "");
-      window.addEventListener("popstate", $onClose);
-    } else if (window.history.state?.bottomSheetOpen) window.history.back();
-    return () => window.removeEventListener("popstate", $onClose);
-  }, [$open, $onClose]);
-
-  React.useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
-
-  if (mounted === false) return null;
+  if (isClient === false) return null;
   return ReactDOM.createPortal(
     <React.Fragment>
       <Overlay $show={$open} $onClick={$onClose} />
