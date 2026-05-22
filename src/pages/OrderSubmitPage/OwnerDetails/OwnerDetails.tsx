@@ -103,7 +103,8 @@ export const OwnerDetails = () => {
 
               <p
                 className={twMerge(
-                  "text-sm mb-3 text-[#757575]",
+                  values.selectedAddress && "text-[#757575]",
+                  "text-sm mb-3 ",
                   touched.selectedAddress
                     ? errors.selectedAddress && "text-red-500"
                     : false,
@@ -123,10 +124,8 @@ export const OwnerDetails = () => {
 
                 <Button
                   type="button"
+                  className={twMerge(values.selectedAddress && "invisible")}
                   $full
-                  $variant={
-                    values.selectedAddress !== null ? "outlined" : "solid"
-                  }
                   onClick={(event) => {
                     event.stopPropagation();
                     setOpen(true);

@@ -7,11 +7,9 @@ export const OrderSuccessPage = () => {
     <div className="flex flex-col h-dvh justify-between">
       <CarDetails isSuccessPage />
 
-      <div className="px-4 py-2">
+      <div className="flex justify-end px-4 py-2">
         <Link href="/order/submit">
-          <Button $color="secondary" className="mr-auto">
-            بازگشت
-          </Button>
+          <Button $color="secondary">بازگشت</Button>
         </Link>
       </div>
     </div>

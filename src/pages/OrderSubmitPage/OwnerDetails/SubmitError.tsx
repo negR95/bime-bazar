@@ -31,7 +31,7 @@ export const SubmitError = (props: Props) => {
         <p>مجددا، تلاش کنید. </p>
       </div>
 
-      <div className="flex gap-2 p-2 shadow">
+      <div className="flex gap-2.5 p-2.5 shadow">
         <Button
           $full
           onClick={handleSubmitOrder}

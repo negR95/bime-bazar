@@ -13,7 +13,7 @@ export const RemoveAddress = (props: Props) => {
 
   return (
     <section>
-      <header className="flex justify-between items-center h-14 px-4 border-b border-(--bb-divider)">
+      <header className="flex justify-between items-center h-14 px-3 border-b border-(--bb-divider)">
         <h4 className="text-md font-medium">حذف آدرس</h4>
 
         <button
@@ -25,16 +25,16 @@ export const RemoveAddress = (props: Props) => {
         </button>
       </header>
 
-      <p className="px-2 pt-4 text-sm font-medium">
+      <p className="px-2.5 pt-4 text-sm font-medium">
         آیا از حذف آدرس خود، مطمین هستید؟
       </p>
 
-      <div className="mx-2 my-3 p-2 bg-[#f2f2f2] flex flex-col gap-2">
+      <div className="mx-2.5 my-4 p-2 bg-[#f2f2f2] flex flex-col gap-2">
         <span className="text-sm font-medium">{address?.name}</span>
         <p className="text-xs text-[#757575]">{address?.details}</p>
       </div>
 
-      <div className="flex gap-2 p-2 shadow">
+      <div className="flex gap-2.5 p-2.5 shadow">
         <Button $full onClick={$onClose} $color="secondary">
           تایید
         </Button>

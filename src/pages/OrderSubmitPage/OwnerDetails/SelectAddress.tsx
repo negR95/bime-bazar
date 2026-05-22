@@ -22,7 +22,7 @@ export const SelectAddress = (props: Props) => {
 
   return (
     <section>
-      <header className="flex justify-between items-center h-14 px-4 border-b border-(--bb-divider)">
+      <header className="flex justify-between items-center h-14 pr-3 pl-2 border-b border-(--bb-divider)">
         <h4 className="text-md font-medium">انتخاب آدرس</h4>
 
         <button
@@ -41,16 +41,16 @@ export const SelectAddress = (props: Props) => {
           </p>
         ) : (
           addresses?.map((address) => (
-            <div key={address.id} className="h-14 flex flex-row pr-4 py-2">
-              <label className="flex flex-row">
+            <div key={address.id} className="h-14 flex flex-row pr-3 py-2">
+              <label className="flex flex-row gap-2">
                 <input
                   type="radio"
-                  className="self-start"
+                  className="self-start appearance-none w-4 h-4 rounded-full border-2 border-[#C2C2C2] bg-white checked:bg-black checked:border-[#C2C2C2] checked:border-[3px] cursor-pointer transition"
                   checked={address.id === selectedAddress?.id}
                   onChange={() => setSelectedAddress(address)}
                 />
 
-                <div className="flex flex-col flex-1 gap-2 mr-2">
+                <div className="flex flex-col flex-1 gap-2">
                   <p className="text-sm font-medium leading-[14px]">
                     {address.name}
                   </p>
@@ -63,7 +63,7 @@ export const SelectAddress = (props: Props) => {
 
               <button
                 type="button"
-                className="p-1 mr-1 hover:bg-gray-50 cursor-pointer self-start"
+                className="p-1 mr-4 hover:bg-red-50 cursor-pointer self-start"
                 onClick={(event) => {
                   event.stopPropagation();
                   setAddressToRemove(address);
@@ -77,7 +77,7 @@ export const SelectAddress = (props: Props) => {
         )}
       </div>
 
-      <div className="p-2 shadow">
+      <div className="p-2.5 shadow">
         <Button
           $full
           disabled={selectedAddress === null}
