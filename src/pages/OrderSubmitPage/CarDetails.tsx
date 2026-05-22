@@ -11,9 +11,28 @@ const Details = (props: { rightText: string; leftText: string }) => {
   );
 };
 
-export const CarDetails = () => {
+export const CarDetails = (props: { isSuccessPage?: boolean }) => {
+  const { isSuccessPage = false } = props;
+
   return (
     <Section $title="مشخصات بیمه نامه">
+      {isSuccessPage && (
+        <div className="flex flex-col justify-center items-center">
+          <Image
+            alt="success"
+            src="/images/success.svg"
+            width={60}
+            height={66}
+            className="mx-auto mb-6"
+            loading="eager"
+          />
+          <h4 className="mb-8">
+            ثبت اطلاعات شما، با <span className="text-[#34A862]">موفقیت</span>{" "}
+            انجام شد.
+          </h4>
+        </div>
+      )}
+
       <Image
         alt="car-plate"
         src="/images/car-plate.svg"

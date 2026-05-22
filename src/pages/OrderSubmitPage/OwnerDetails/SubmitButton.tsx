@@ -6,7 +6,12 @@ import { api } from "#/services/api";
 import { useMutation } from "#/services/hooks";
 import type { OwnerDetailsFormikValues } from "./utils";
 
-export const SubmitButton = () => {
+type Props = {
+  setSheet: React.Dispatch<React.SetStateAction<SheetContent>>;
+};
+
+export const SubmitButton = (props: Props) => {
+  const { setSheet } = props;
   const router = useRouter();
   const { values, dirty, isValid } =
     useFormikContext<OwnerDetailsFormikValues>();
@@ -29,8 +34,9 @@ export const SubmitButton = () => {
   };
 
   React.useEffect(() => {
-    if (data && !error) router.push("/order/success");
-  }, [data, error, router]);
+    if (error) setSheet("submit-error");
+    else if (data) router.push("/order/success");
+  }, [data, error, router, setSheet]);
 
   return (
     <Button
